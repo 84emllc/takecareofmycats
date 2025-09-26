@@ -4,78 +4,115 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Take Care Of My Cats - Daily Feeding Schedule</title>
-    <meta name="description" content="Daily feeding schedule and care instructions for Leona and Lenny including meal times, supplements, and medications.">
+    <meta name="description" content="Daily feeding schedule and care instructions for Leona and Lenny including meal times and food types.">
     <link rel="stylesheet" href="assets/css/styles.css">
     <meta name="robots" content="index, follow">
-    <script src="assets/js/main.js" defer></script>
 </head>
 <body>
-<a href="#main-content" class="skip-nav">Skip to main content</a>
+    <a href="#main-content" class="skip-nav">Skip to main content</a>
 
-<div class="container">
-    <header role="banner">
+    <!-- Hero Section -->
+    <header class="hero" role="banner">
         <h1>Take Care Of My Cats</h1>
-        <p>Daily Feeding Schedule & Care Instructions</p>
+        <h2>Daily Feeding Schedule</h2>
     </header>
 
     <main id="main-content" role="main">
-        <section aria-labelledby="cats-heading">
-            <h2 id="cats-heading" class="sr-only">Our cats</h2>
-            <div class="cats-intro">
-                <div class="cat-card" tabindex="0" role="img" aria-label="Murphy - one of our cats">
-                    <img src="assets/images/leona.jpg" alt="Leona, a friendly cat" class="cat-image">
-                    <div class="cat-name">Leona</div>
-                </div>
-                <div class="cat-card" tabindex="0" role="img" aria-label="Lyla - one of our cats">
-                    <img src="assets/images/lenny.jpg" alt="Lenny, a sweet cat" class="cat-image">
-                    <div class="cat-name">Lenny</div>
+        <!-- Feeding Schedule with Tabs -->
+        <section class="schedule-section">
+            <div class="tab-container" role="tablist" aria-label="Meal times">
+                <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="breakfast" data-tab="breakfast">Breakfast</button>
+            </div>
+
+            <!-- Breakfast Tab -->
+            <div class="tab-content active" role="tabpanel" id="breakfast" aria-labelledby="breakfast-tab">
+                <div class="feeding-grid">
+                    <article class="feeding-card">
+                        <div class="feeding-header">
+                            <div class="cat-info-container">
+                                <img src="assets/images/leona.jpg" alt="Leona" class="cat-photo">
+                                <h3 class="feeding-cat-name">Leona</h3>
+                            </div>
+                            <time class="feeding-time">breakfast</time>
+                        </div>
+                        <div class="feeding-items">
+                            <div class="feeding-item">
+                                <div class="item-icon food" aria-hidden="true">🥫</div>
+                                <div class="item-details">
+                                    <div class="item-name">Purina Pro Plan Wet Food</div>
+                                    <div class="item-quantity">1 can</div>
+                                </div>
+                            </div>
+                            <div class="feeding-item">
+                                <div class="item-icon food" aria-hidden="true">🥣</div>
+                                <div class="item-details">
+                                    <div class="item-name">Dry Food</div>
+                                    <div class="item-quantity">1 pink scoop</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="feeding-card">
+                        <div class="feeding-header">
+                            <div class="cat-info-container">
+                                <img src="assets/images/lenny.jpg" alt="Lenny" class="cat-photo">
+                                <h3 class="feeding-cat-name">Lenny</h3>
+                            </div>
+                            <time class="feeding-time">breakfast</time>
+                        </div>
+                        <div class="feeding-items">
+                            <div class="feeding-item">
+                                <div class="item-icon food" aria-hidden="true">🥫</div>
+                                <div class="item-details">
+                                    <div class="item-name">Purina Pro Plan Wet Food</div>
+                                    <div class="item-quantity">1 can</div>
+                                </div>
+                            </div>
+                            <div class="feeding-item">
+                                <div class="item-icon food" aria-hidden="true">🥣</div>
+                                <div class="item-details">
+                                    <div class="item-name">Dry Food</div>
+                                    <div class="item-quantity">1 pink scoop</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
                 </div>
             </div>
         </section>
 
-        <section class="meal-section" aria-labelledby="breakfast-heading">
-            <h2 id="breakfast-heading" class="meal-title">Breakfast</h2>
-            <div class="meal-table" role="table" aria-label="Breakfast feeding schedule for all cats">
-                <div class="meal-row header" role="row">
-                    <div class="meal-cell" role="columnheader">Leona</div>
-                    <div class="meal-cell" role="columnheader">Lenny</div>
-                </div>
-                <div class="meal-row" role="row">
-                    <div class="meal-cell" role="cell" data-label="Leona">1 can – Purina Pro Plan wet food</div>
-                    <div class="meal-cell" role="cell" data-label="Lenny">1 can – Purina Pro Plan wet food</div>
-                </div>
-                <div class="meal-row" role="row">
-                    <div class="meal-cell" role="cell" data-label="Leona">1 pink scoop – dry food</div>
-                    <div class="meal-cell" role="cell" data-label="Lenny">1 pink scoop – dry food</div>
-                </div>
-            </div>
-        </section>
-
+        <!-- Supplements Section -->
         <section class="supplements-section" aria-labelledby="supplements-heading">
-            <h2 id="supplements-heading" class="supplements-title">Supplements & Food</h2>
-            <div class="supplements-grid" role="list" aria-label="List of supplements and food types used">
-                <div class="supplement-item" tabindex="0" role="listitem">
-                    <img src="assets/images/calmingchews.jpg" alt="Calming chews bag" class="supplement-image">
-                    <div class="supplement-name">Treats</div>
+            <h2 id="supplements-heading" class="supplements-title">Food & Treats</h2>
+            <div class="supplement-grid">
+                <div class="supplement-card" tabindex="0">
+                    <img src="assets/images/wetfood.jpg" alt="Wet food" class="supplement-icon-img">
+                    <div class="supplement-name">Wet Food</div>
                 </div>
-                <div class="supplement-item" tabindex="0" role="listitem">
-                    <img src="assets/images/dryfood.jpg" alt="Dry food" class="supplement-image">
+                <div class="supplement-card" tabindex="0">
+                    <img src="assets/images/dryfood.jpg" alt="Dry food" class="supplement-icon-img">
                     <div class="supplement-name">Dry Food</div>
                 </div>
-                <div class="supplement-item" tabindex="0" role="listitem">
-                    <img src="assets/images/wetfood.jpg" alt="Wet food" class="supplement-image">
-                    <div class="supplement-name">Wet Food</div>
+                <div class="supplement-card" tabindex="0">
+                    <img src="assets/images/calmingchews.jpg" alt="Calming chews" class="supplement-icon-img">
+                    <div class="supplement-name">Treats</div>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Floating Action Button -->
+    <button class="fab" aria-label="Add new entry">+</button>
+
+    <!-- Footer -->
     <footer role="contentinfo">
         <div class="footer-content">
-            <p>&copy; 2024-2025 Andrew Miller @ 84EM</p>
-            <p><a href="https://84em.com/" target="_blank">Custom WordPress Development Company in Cedar Rapids, Iowa</a></p>
+            <p>&copy; 2025 Andrew Miller @ 84EM</p>
+            <p><a href="https://84em.com/" target="_blank" rel="noopener">Custom Website Development Company in Cedar Rapids, Iowa</a></p>
         </div>
     </footer>
-</div>
+
+    <script src="assets/js/main.js"></script>
 </body>
 </html>
