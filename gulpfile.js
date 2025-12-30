@@ -12,112 +12,128 @@ const rename = require('gulp-rename');
 const sourcemaps = require('gulp-sourcemaps');
 const browserSync = require('browser-sync').create();
 const del = require('del');
-const imagemin = require('gulp-imagemin');
 const htmlmin = require('gulp-htmlmin');
 const replace = require('gulp-replace');
 
 // File paths
 const paths = {
-  styles: {
-    src: 'assets/css/styles.css',
-    dest: 'dist/css/'
-  },
-  scripts: {
-    src: 'assets/js/**/*.js',
-    dest: 'dist/js/'
-  },
-  images: {
-    src: 'assets/images/**/*.{jpg,jpeg,png,gif,svg}',
-    dest: 'dist/images/'
-  },
-  html: {
-    src: '*.html',
-    dest: 'dist/'
-  }
+    styles: {
+        src: 'assets/css/styles.css',
+        dest: 'dist/css/'
+    },
+    scripts: {
+        src: 'assets/js/**/*.js',
+        dest: 'dist/js/'
+    },
+    images: {
+        src: 'assets/images/**/*.{jpg,jpeg,png,gif,svg}',
+        dest: 'dist/images/'
+    },
+    html: {
+        src: '*.html',
+        dest: 'dist/'
+    },
+    pwa: {
+        sw: 'sw.js',
+        manifest: 'manifest.json',
+        icons: 'assets/icons/**/*.png',
+        iconsDest: 'dist/icons/'
+    }
 };
 
 // Clean dist directory
 function clean() {
-  return del(['dist']);
+    return del(['dist']);
 }
 
 // Process CSS files
 function styles() {
-  return gulp.src(paths.styles.src)
-    .pipe(sourcemaps.init())
-    .pipe(autoprefixer())
-    .pipe(gulp.dest(paths.styles.dest)) // Save unminified version
-    .pipe(cleanCSS())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(paths.styles.dest))
-    .pipe(browserSync.stream());
+    return gulp.src(paths.styles.src)
+        .pipe(sourcemaps.init())
+        .pipe(autoprefixer())
+        .pipe(gulp.dest(paths.styles.dest)) // Save unminified version
+        .pipe(cleanCSS())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(paths.styles.dest))
+        .pipe(browserSync.stream());
 }
 
 // Process JavaScript files
 function scripts() {
-  return gulp.src(paths.scripts.src)
-    .pipe(sourcemaps.init())
-    .pipe(concat('main.js'))
-    .pipe(gulp.dest(paths.scripts.dest)) // Save unminified version
-    .pipe(terser())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(paths.scripts.dest))
-    .pipe(browserSync.stream());
+    return gulp.src(paths.scripts.src)
+        .pipe(sourcemaps.init())
+        .pipe(concat('main.js'))
+        .pipe(gulp.dest(paths.scripts.dest)) // Save unminified version
+        .pipe(terser())
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(paths.scripts.dest))
+        .pipe(browserSync.stream());
 }
 
-// Optimize images
+// Copy images with explicit encoding
 function images() {
-  return gulp.src(paths.images.src)
-    .pipe(imagemin([
-      imagemin.mozjpeg({ quality: 95, progressive: true }),
-      imagemin.optipng({ optimizationLevel: 1 }),
-      imagemin.svgo({
-        plugins: [
-          { name: 'removeViewBox', active: false },
-          { name: 'cleanupIDs', active: false }
-        ]
-      })
-    ]))
-    .pipe(gulp.dest(paths.images.dest))
-    .pipe(browserSync.stream());
+    return gulp.src(paths.images.src, { encoding: false })
+        .pipe(gulp.dest(paths.images.dest));
+}
+
+// Copy service worker to dist root
+function serviceWorker() {
+    return gulp.src(paths.pwa.sw)
+        .pipe(gulp.dest('dist/'));
+}
+
+// Copy manifest to dist root
+function manifest() {
+    return gulp.src(paths.pwa.manifest)
+        .pipe(gulp.dest('dist/'));
+}
+
+// Copy PWA icons
+function pwaIcons() {
+    return gulp.src(paths.pwa.icons, { encoding: false })
+        .pipe(gulp.dest(paths.pwa.iconsDest));
 }
 
 // Process HTML files
 function html() {
-  return gulp.src(paths.html.src)
-    .pipe(replace('assets/css/styles.css', 'css/styles.min.css'))
-    .pipe(replace('assets/js/main.js', 'js/main.min.js'))
-    .pipe(replace(/assets\/images\//g, 'images/'))
-    .pipe(htmlmin({
-      collapseWhitespace: true,
-      removeComments: true,
-      removeRedundantAttributes: true,
-      removeScriptTypeAttributes: true,
-      removeStyleLinkTypeAttributes: true,
-      useShortDoctype: true
-    }))
-    .pipe(gulp.dest(paths.html.dest))
-    .pipe(browserSync.stream());
+    return gulp.src(paths.html.src)
+        .pipe(replace('assets/css/styles.css', 'css/styles.min.css'))
+        .pipe(replace('assets/js/main.js', 'js/main.min.js'))
+        .pipe(replace('assets/images/', 'images/'))
+        .pipe(replace('assets/icons/', 'icons/'))
+        .pipe(htmlmin({
+            collapseWhitespace: true,
+            removeComments: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            useShortDoctype: true
+        }))
+        .pipe(gulp.dest(paths.html.dest))
+        .pipe(browserSync.stream());
 }
 
 // Watch files for changes
 function watch() {
-  browserSync.init({
-    server: {
-      baseDir: './'
-    }
-  });
+    browserSync.init({
+        server: {
+            baseDir: './dist/'
+        }
+    });
 
-  gulp.watch(paths.styles.src, styles);
-  gulp.watch(paths.scripts.src, scripts);
-  gulp.watch(paths.images.src, images);
-  gulp.watch(paths.html.src, html);
+    gulp.watch(paths.styles.src, styles);
+    gulp.watch(paths.scripts.src, scripts);
+    gulp.watch(paths.images.src, images);
+    gulp.watch(paths.html.src, html);
+    gulp.watch(paths.pwa.sw, serviceWorker);
+    gulp.watch(paths.pwa.manifest, manifest);
+    gulp.watch(paths.pwa.icons, pwaIcons);
 }
 
 // Define complex tasks
-const build = gulp.series(clean, gulp.parallel(styles, scripts, images, html));
+const build = gulp.series(clean, gulp.parallel(styles, scripts, images, html, serviceWorker, manifest, pwaIcons));
 const dev = gulp.series(build, watch);
 
 // Export tasks
@@ -126,6 +142,9 @@ exports.styles = styles;
 exports.scripts = scripts;
 exports.images = images;
 exports.html = html;
+exports.serviceWorker = serviceWorker;
+exports.manifest = manifest;
+exports.pwaIcons = pwaIcons;
 exports.watch = watch;
 exports.build = build;
 exports.default = dev;

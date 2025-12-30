@@ -1,5 +1,5 @@
 /**
- * Main JavaScript for Take Care Of My Dogs
+ * Main JavaScript for Take Care Of My Cats
  * Handles tab switching, touch interactions, and progressive enhancements
  */
 
@@ -210,6 +210,7 @@
         initKeyboardNav();
         initLazyImages();
         highlightCurrentMealTime();
+        registerServiceWorker();
 
         // Check meal times every minute
         setInterval(highlightCurrentMealTime, 60000);
