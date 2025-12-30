@@ -78,7 +78,7 @@ body {
 
 /* Reset Button */
 .reset-btn {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     padding: 0.5rem 1.5rem;
     background: transparent;
     color: var(--text-muted);
@@ -87,6 +87,13 @@ body {
     font-size: 0.875rem;
     cursor: pointer;
     transition: var(--transition);
+    display: none;
+}
+
+.reset-btn.visible {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .reset-btn:hover {

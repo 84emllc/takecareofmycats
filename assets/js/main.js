@@ -259,8 +259,11 @@
                 } else {
                     item.classList.remove('completed');
                 }
+                updateResetButtonVisibility();
             });
         });
+
+        updateResetButtonVisibility();
     }
 
     function checkDateChange() {
@@ -289,6 +292,21 @@
                 item.classList.remove('completed');
             }
         });
+        updateResetButtonVisibility();
+    }
+
+    function updateResetButtonVisibility() {
+        const resetBtn = document.getElementById('reset-checkboxes');
+        if (!resetBtn) return;
+
+        const checkboxes = document.querySelectorAll('.feeding-item input[type="checkbox"]');
+        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+
+        if (anyChecked) {
+            resetBtn.classList.add('visible');
+        } else {
+            resetBtn.classList.remove('visible');
+        }
     }
 
     function initResetButton() {
