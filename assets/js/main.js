@@ -273,19 +273,32 @@
 
             if (data.date !== today) {
                 clearExpiredCheckboxes();
-                // Reset all checkbox UI
-                const feedingItems = document.querySelectorAll('.feeding-item[data-item-id]');
-                feedingItems.forEach(item => {
-                    const checkbox = item.querySelector('input[type="checkbox"]');
-                    if (checkbox) {
-                        checkbox.checked = false;
-                        item.classList.remove('completed');
-                    }
-                });
+                resetAllCheckboxesUI();
             }
         } catch (e) {
             // Ignore JSON parse errors
         }
+    }
+
+    function resetAllCheckboxesUI() {
+        const feedingItems = document.querySelectorAll('.feeding-item[data-item-id]');
+        feedingItems.forEach(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = false;
+                item.classList.remove('completed');
+            }
+        });
+    }
+
+    function initResetButton() {
+        const resetBtn = document.getElementById('reset-checkboxes');
+        if (!resetBtn) return;
+
+        resetBtn.addEventListener('click', function() {
+            clearExpiredCheckboxes();
+            resetAllCheckboxesUI();
+        });
     }
 
     // Progressive enhancement for images
@@ -318,6 +331,7 @@
         initKeyboardNav();
         initLazyImages();
         initCheckboxes();
+        initResetButton();
         highlightCurrentMealTime();
         registerServiceWorker();
 

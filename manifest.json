@@ -1,7 +1,7 @@
 {
   "name": "Take Care Of My Cats",
   "short_name": "Cat Care",
-  "description": "Daily feeding schedule and care instructions for Leona and Lenny",
+  "description": "Daily feeding schedule and care instructions for Leona, Lenny, and Willie",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",

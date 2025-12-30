@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Take Care Of My Cats - Daily Feeding Schedule</title>
-    <meta name="description" content="Daily feeding schedule and care instructions for Leona and Lenny including meal times and food types.">
+    <meta name="description" content="Daily feeding schedule and care instructions for Leona, Lenny, and Willie including meal times and food types.">
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://takecareofmycats.com/">
     <meta property="og:title" content="Take Care Of My Cats - Daily Feeding Schedule">
-    <meta property="og:description" content="Daily feeding schedule and care instructions for Leona and Lenny including meal times and food types.">
+    <meta property="og:description" content="Daily feeding schedule and care instructions for Leona, Lenny, and Willie including meal times and food types.">
     <meta property="og:image" content="https://takecareofmycats.com/assets/images/leona.jpg">
     <meta property="og:image:alt" content="Leona the cat">
 
@@ -18,7 +18,7 @@
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://takecareofmycats.com/">
     <meta property="twitter:title" content="Take Care Of My Cats - Daily Feeding Schedule">
-    <meta property="twitter:description" content="Daily feeding schedule and care instructions for Leona and Lenny including meal times and food types.">
+    <meta property="twitter:description" content="Daily feeding schedule and care instructions for Leona, Lenny, and Willie including meal times and food types.">
     <meta property="twitter:image" content="https://takecareofmycats.com/assets/images/leona.jpg">
 
     <link rel="stylesheet" href="assets/css/styles.css">
@@ -44,6 +44,7 @@
     <header class="hero" role="banner">
         <h1>Take Care Of My Cats</h1>
         <h2>Daily Feeding Schedule</h2>
+        <button class="reset-btn" id="reset-checkboxes" aria-label="Reset all checkboxes">Reset</button>
     </header>
 
     <main id="main-content" role="main">
@@ -111,6 +112,40 @@
                                 </div>
                             </div>
                             <div class="feeding-item" data-item-id="breakfast-lenny-dryfood">
+                                <label class="item-checkbox">
+                                    <input type="checkbox" aria-label="Mark dry food as given">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="item-icon food" aria-hidden="true">🥣</div>
+                                <div class="item-details">
+                                    <div class="item-name">Dry Food: Purina Pro Plan Adult Indoor Hairball Management</div>
+                                    <div class="item-quantity">1/2 cup (1 pink scoop)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="feeding-card">
+                        <div class="feeding-header">
+                            <div class="cat-info-container">
+                                <img src="assets/images/willie.jpg" alt="Willie" class="cat-photo">
+                                <h3 class="feeding-cat-name">Willie</h3>
+                            </div>
+                            <time class="feeding-time">breakfast</time>
+                        </div>
+                        <div class="feeding-items">
+                            <div class="feeding-item" data-item-id="breakfast-willie-wetfood">
+                                <label class="item-checkbox">
+                                    <input type="checkbox" aria-label="Mark wet food as given">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <div class="item-icon food" aria-hidden="true">🥫</div>
+                                <div class="item-details">
+                                    <div class="item-name">Wet Food: Purina Pro Plan Adult Seafood Stew</div>
+                                    <div class="item-quantity">One 3-oz can</div>
+                                </div>
+                            </div>
+                            <div class="feeding-item" data-item-id="breakfast-willie-dryfood">
                                 <label class="item-checkbox">
                                     <input type="checkbox" aria-label="Mark dry food as given">
                                     <span class="checkmark"></span>
