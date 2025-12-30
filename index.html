@@ -23,6 +23,19 @@
 
     <link rel="stylesheet" href="assets/css/styles.css">
     <meta name="robots" content="index, follow">
+
+    <!-- PWA -->
+    <meta name="theme-color" content="#1e3a5f">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Cat Care">
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
 </head>
 <body>
     <a href="#main-content" class="skip-nav">Skip to main content</a>
@@ -52,14 +65,22 @@
                             <time class="feeding-time">breakfast</time>
                         </div>
                         <div class="feeding-items">
-                            <div class="feeding-item">
+                            <div class="feeding-item" data-item-id="breakfast-leona-wetfood">
+                                <label class="item-checkbox">
+                                    <input type="checkbox" aria-label="Mark wet food as given">
+                                    <span class="checkmark"></span>
+                                </label>
                                 <div class="item-icon food" aria-hidden="true">🥫</div>
                                 <div class="item-details">
                                     <div class="item-name">Wet Food: Purina Pro Plan Adult Seafood Stew</div>
                                     <div class="item-quantity">One 3-oz can</div>
                                 </div>
                             </div>
-                            <div class="feeding-item">
+                            <div class="feeding-item" data-item-id="breakfast-leona-dryfood">
+                                <label class="item-checkbox">
+                                    <input type="checkbox" aria-label="Mark dry food as given">
+                                    <span class="checkmark"></span>
+                                </label>
                                 <div class="item-icon food" aria-hidden="true">🥣</div>
                                 <div class="item-details">
                                     <div class="item-name">Dry Food: Purina Pro Plan Adult Indoor Hairball Management</div>
@@ -78,15 +99,22 @@
                             <time class="feeding-time">breakfast</time>
                         </div>
                         <div class="feeding-items">
-                            <div class="feeding-item">
+                            <div class="feeding-item" data-item-id="breakfast-lenny-wetfood">
+                                <label class="item-checkbox">
+                                    <input type="checkbox" aria-label="Mark wet food as given">
+                                    <span class="checkmark"></span>
+                                </label>
                                 <div class="item-icon food" aria-hidden="true">🥫</div>
                                 <div class="item-details">
                                     <div class="item-name">Wet Food: Purina Pro Plan Adult Seafood Stew</div>
                                     <div class="item-quantity">One 3-oz can</div>
                                 </div>
-                                </div>
                             </div>
-                            <div class="feeding-item">
+                            <div class="feeding-item" data-item-id="breakfast-lenny-dryfood">
+                                <label class="item-checkbox">
+                                    <input type="checkbox" aria-label="Mark dry food as given">
+                                    <span class="checkmark"></span>
+                                </label>
                                 <div class="item-icon food" aria-hidden="true">🥣</div>
                                 <div class="item-details">
                                     <div class="item-name">Dry Food: Purina Pro Plan Adult Indoor Hairball Management</div>

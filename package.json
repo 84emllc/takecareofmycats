@@ -1,7 +1,7 @@
 {
   "name": "takecareofmycats",
-  "version": "1.0.0",
-  "description": "A website for cat care instructions",
+  "version": "1.1.0",
+  "description": "Daily feeding schedule and care instructions for cats",
   "main": "index.js",
   "scripts": {
     "start": "gulp",
@@ -10,18 +10,19 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^4.0.2",
+    "browser-sync": "^3.0.4",
+    "del": "^6.1.1",
+    "gulp": "^5.0.1",
     "gulp-autoprefixer": "^8.0.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-concat": "^2.6.1",
-    "gulp-rename": "^2.0.0",
-    "gulp-terser": "^2.1.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "browser-sync": "^2.29.3",
-    "del": "^6.1.1",
-    "gulp-imagemin": "^7.1.0",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-replace": "^1.1.4"
+    "gulp-imagemin": "^9.1.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.1.4",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-terser": "^2.1.0",
+    "sharp": "^0.34.5"
   },
   "browserslist": [
     "last 2 versions",
