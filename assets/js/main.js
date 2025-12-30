@@ -180,6 +180,114 @@
         });
     }
 
+    // Checkbox state management with daily reset
+    const STORAGE_KEY = 'feedingChecks';
+
+    function getTodayDateString() {
+        const now = new Date();
+        return now.toISOString().split('T')[0];
+    }
+
+    function loadCheckboxStates() {
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (!stored) return {};
+
+            const data = JSON.parse(stored);
+            const today = getTodayDateString();
+
+            if (data.date !== today) {
+                clearExpiredCheckboxes();
+                return {};
+            }
+
+            return data.items || {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    function saveCheckboxState(itemId, checked) {
+        try {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            let data = stored ? JSON.parse(stored) : {};
+            const today = getTodayDateString();
+
+            if (data.date !== today) {
+                data = { date: today, items: {} };
+            }
+
+            data.items[itemId] = checked;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        } catch (e) {
+            // localStorage unavailable, checkboxes work but don't persist
+        }
+    }
+
+    function clearExpiredCheckboxes() {
+        try {
+            const today = getTodayDateString();
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, items: {} }));
+        } catch (e) {
+            // localStorage unavailable
+        }
+    }
+
+    function initCheckboxes() {
+        const feedingItems = document.querySelectorAll('.feeding-item[data-item-id]');
+        const states = loadCheckboxStates();
+
+        feedingItems.forEach(item => {
+            const itemId = item.getAttribute('data-item-id');
+            const checkbox = item.querySelector('input[type="checkbox"]');
+
+            if (!checkbox) return;
+
+            // Restore state
+            if (states[itemId]) {
+                checkbox.checked = true;
+                item.classList.add('completed');
+            }
+
+            // Handle checkbox changes
+            checkbox.addEventListener('change', function() {
+                const isChecked = this.checked;
+                saveCheckboxState(itemId, isChecked);
+
+                if (isChecked) {
+                    item.classList.add('completed');
+                } else {
+                    item.classList.remove('completed');
+                }
+            });
+        });
+    }
+
+    function checkDateChange() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return;
+
+        try {
+            const data = JSON.parse(stored);
+            const today = getTodayDateString();
+
+            if (data.date !== today) {
+                clearExpiredCheckboxes();
+                // Reset all checkbox UI
+                const feedingItems = document.querySelectorAll('.feeding-item[data-item-id]');
+                feedingItems.forEach(item => {
+                    const checkbox = item.querySelector('input[type="checkbox"]');
+                    if (checkbox) {
+                        checkbox.checked = false;
+                        item.classList.remove('completed');
+                    }
+                });
+            }
+        } catch (e) {
+            // Ignore JSON parse errors
+        }
+    }
+
     // Progressive enhancement for images
     function initLazyImages() {
         if ('loading' in HTMLImageElement.prototype) {
@@ -209,11 +317,15 @@
         initFAB();
         initKeyboardNav();
         initLazyImages();
+        initCheckboxes();
         highlightCurrentMealTime();
         registerServiceWorker();
 
-        // Check meal times every minute
-        setInterval(highlightCurrentMealTime, 60000);
+        // Check meal times and date change every minute
+        setInterval(function() {
+            highlightCurrentMealTime();
+            checkDateChange();
+        }, 60000);
     }
 
     // Run initialization
