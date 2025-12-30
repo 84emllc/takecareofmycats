@@ -341,6 +341,80 @@
         }
     }
 
+    // PWA Install Prompt
+    var deferredPrompt = null;
+
+    function isIOS() {
+        return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+
+    function isInStandaloneMode() {
+        return window.matchMedia('(display-mode: standalone)').matches ||
+               window.navigator.standalone === true;
+    }
+
+    function initInstallPrompt() {
+        var installBanner = document.getElementById('install-banner');
+        var installBtn = document.getElementById('install-btn');
+        var installText = document.getElementById('install-text');
+        var dismissBtn = document.getElementById('install-dismiss');
+
+        if (!installBanner) return;
+
+        // Already installed
+        if (isInStandaloneMode()) {
+            return;
+        }
+
+        // User dismissed this session
+        if (sessionStorage.getItem('installBannerDismissed')) {
+            return;
+        }
+
+        // iOS: Show banner with manual instructions
+        if (isIOS()) {
+            installBanner.classList.add('visible', 'ios');
+            if (installText) {
+                installText.textContent = 'Tap Share then "Add to Home Screen"';
+            }
+            installBtn.disabled = true;
+        }
+
+        // Android/Desktop: Listen for beforeinstallprompt
+        window.addEventListener('beforeinstallprompt', function(e) {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.classList.add('visible');
+        });
+
+        // Handle install button click
+        installBtn.addEventListener('click', function() {
+            if (!deferredPrompt) return;
+
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(choiceResult) {
+                if (choiceResult.outcome === 'accepted') {
+                    installBanner.classList.remove('visible');
+                }
+                deferredPrompt = null;
+            });
+        });
+
+        // Handle dismiss button
+        if (dismissBtn) {
+            dismissBtn.addEventListener('click', function() {
+                installBanner.classList.remove('visible');
+                sessionStorage.setItem('installBannerDismissed', 'true');
+            });
+        }
+
+        // Hide after installed
+        window.addEventListener('appinstalled', function() {
+            installBanner.classList.remove('visible');
+            deferredPrompt = null;
+        });
+    }
+
     // Initialize all features when DOM is ready
     function init() {
         initTabs();
@@ -352,6 +426,7 @@
         initResetButton();
         highlightCurrentMealTime();
         registerServiceWorker();
+        initInstallPrompt();
 
         // Check meal times and date change every minute
         setInterval(function() {
