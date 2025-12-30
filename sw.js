@@ -3,7 +3,7 @@
  * Cache-first strategy for offline functionality
  */
 
-const CACHE_NAME = 'takecareofmycats-v1.1.0';
+const CACHE_NAME = 'takecareofmycats-v1.2.0';
 
 const ASSETS_TO_CACHE = [
     '/',
@@ -14,6 +14,7 @@ const ASSETS_TO_CACHE = [
     // Cat photos
     '/images/leona.jpg',
     '/images/lenny.jpg',
+    '/images/willie.jpg',
     // Food images
     '/images/calmingchews.jpg',
     '/images/dryfood.jpg',
