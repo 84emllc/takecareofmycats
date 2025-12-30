@@ -1,25 +1,21 @@
 # Take Care Of My Cats - Daily Feeding Schedule
 
-This project provides a simple web page to outline the **daily feeding schedule and care instructions** for two cats: **Leona** and **Lenny**. The page ensures clear and accessible instructions are available for anyone responsible for taking care of the cats.
-
----
+A Progressive Web App (PWA) providing a daily feeding schedule and care instructions for two cats: **Leona** and **Lenny**. The page ensures clear and accessible instructions are available for anyone responsible for taking care of the cats.
 
 ## Features
 
-- **Cat Profiles**:
-    - Displays individual cards for each cat with their **photo**, **name**, and a short description.
-- **Feeding Schedule**:
-    - Includes a detailed meal schedule for all cats.
-- **Accessible Design**:
-    - ARIA roles and accessible markup (e.g., descriptive alt texts, screen reader labels, and focusable elements) are included to accommodate users with assistive technologies.
-- **Optimized Assets**:
-    - CSS and JavaScript files are processed with Gulp for improved performance.
+- **Daily Feeding Schedule**: Detailed meal schedule with food types and quantities
+- **Task Tracking**: Checkboxes to mark completed feeding tasks (resets daily at midnight)
+- **Progressive Web App**: Install on mobile devices, works offline
+- **Cat Profiles**: Individual cards for each cat with photo, name, and feeding details
+- **Accessible Design**: ARIA roles, screen reader support, and keyboard navigation
+- **Mobile-First**: Responsive design with touch-friendly 44x44px tap targets
 
 ## Development
 
 ### Prerequisites
 
-- Node.js and npm installed on your machine
+- Node.js 18+ and npm
 
 ### Setup
 
@@ -29,18 +25,51 @@ This project provides a simple web page to outline the **daily feeding schedule 
    npm install
    ```
 
+### Scripts
+
+- `npm start` - Starts development server with live reloading
+- `npm run build` - Builds production-ready assets to `dist/`
+
 ### Gulp Tasks
 
-This project uses Gulp to process CSS and JavaScript files:
-
-- `npm start` - Starts development mode with live reloading
-- `npm run build` - Builds production-ready assets
-
-#### Available Gulp Commands
-
-- `gulp` - Default task that builds assets and starts the development server
+- `gulp` - Default task: builds assets and starts dev server
 - `gulp build` - Builds all assets for production
 - `gulp clean` - Cleans the dist directory
 - `gulp styles` - Processes CSS files
 - `gulp scripts` - Processes JavaScript files
-- `gulp watch` - Watches for file changes and reloads the browser
+- `gulp images` - Optimizes images
+- `gulp pwaIcons` - Generates PWA icons from SVG
+
+## Deployment
+
+### Kinsta Static Sites
+
+1. Connect your GitHub repository in the Kinsta dashboard
+2. Configure build settings:
+   - **Build command**: `npm run build`
+   - **Node version**: 18
+   - **Publish directory**: `dist`
+3. Deploy
+
+The site includes a service worker for offline functionality. Cache versioning is managed in `sw.js`.
+
+## Project Structure
+
+```
+├── assets/
+│   ├── css/styles.css      # Source styles
+│   ├── js/main.js          # Source JavaScript
+│   ├── images/             # Cat photos and food images
+│   └── icons/              # PWA icons and favicon
+├── dist/                   # Built production files
+├── scripts/
+│   └── generate-icons.js   # PWA icon generation
+├── index.html              # Main HTML file
+├── sw.js                   # Service worker
+├── manifest.json           # PWA manifest
+└── gulpfile.js             # Build configuration
+```
+
+## Version
+
+See [CHANGELOG.md](CHANGELOG.md) for version history.
