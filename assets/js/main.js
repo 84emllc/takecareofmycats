@@ -217,6 +217,8 @@
             const today = getTodayDateString();
 
             if (data.date !== today) {
+                // Date changed - reset UI to clear stale checkmarks
+                resetAllCheckboxesUI();
                 data = { date: today, items: {} };
             }
 
@@ -436,6 +438,13 @@
             highlightCurrentMealTime();
             checkDateChange();
         }, 60000);
+
+        // Check date change when app returns to foreground (critical for PWA)
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible') {
+                checkDateChange();
+            }
+        });
     }
 
     // Run initialization
