@@ -1,6 +1,6 @@
 {
   "name": "takecareofmycats",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "Daily feeding schedule and care instructions for cats",
   "main": "index.js",
   "scripts": {
