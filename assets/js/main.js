@@ -180,150 +180,6 @@
         });
     }
 
-    // Checkbox state management with daily reset
-    const STORAGE_KEY = 'feedingChecks';
-
-    function getTodayDateString() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        return year + '-' + month + '-' + day;
-    }
-
-    function loadCheckboxStates() {
-        try {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            if (!stored) return {};
-
-            const data = JSON.parse(stored);
-            const today = getTodayDateString();
-
-            if (data.date !== today) {
-                clearExpiredCheckboxes();
-                return {};
-            }
-
-            return data.items || {};
-        } catch (e) {
-            return {};
-        }
-    }
-
-    function saveCheckboxState(itemId, checked) {
-        try {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            let data = stored ? JSON.parse(stored) : {};
-            const today = getTodayDateString();
-
-            if (data.date !== today) {
-                // Date changed - reset UI to clear stale checkmarks
-                resetAllCheckboxesUI();
-                data = { date: today, items: {} };
-            }
-
-            data.items[itemId] = checked;
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        } catch (e) {
-            // localStorage unavailable, checkboxes work but don't persist
-        }
-    }
-
-    function clearExpiredCheckboxes() {
-        try {
-            const today = getTodayDateString();
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, items: {} }));
-        } catch (e) {
-            // localStorage unavailable
-        }
-    }
-
-    function initCheckboxes() {
-        const feedingItems = document.querySelectorAll('.feeding-item[data-item-id]');
-        const states = loadCheckboxStates();
-
-        feedingItems.forEach(item => {
-            const itemId = item.getAttribute('data-item-id');
-            const checkbox = item.querySelector('input[type="checkbox"]');
-
-            if (!checkbox) return;
-
-            // Restore state
-            if (states[itemId]) {
-                checkbox.checked = true;
-                item.classList.add('completed');
-            }
-
-            // Handle checkbox changes
-            checkbox.addEventListener('change', function() {
-                const isChecked = this.checked;
-                saveCheckboxState(itemId, isChecked);
-
-                if (isChecked) {
-                    item.classList.add('completed');
-                } else {
-                    item.classList.remove('completed');
-                }
-                updateResetButtonVisibility();
-            });
-        });
-
-        updateResetButtonVisibility();
-    }
-
-    function checkDateChange() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (!stored) return;
-
-        try {
-            const data = JSON.parse(stored);
-            const today = getTodayDateString();
-
-            if (data.date !== today) {
-                clearExpiredCheckboxes();
-                resetAllCheckboxesUI();
-            }
-        } catch (e) {
-            // Ignore JSON parse errors
-        }
-    }
-
-    function resetAllCheckboxesUI() {
-        const feedingItems = document.querySelectorAll('.feeding-item[data-item-id]');
-        feedingItems.forEach(item => {
-            const checkbox = item.querySelector('input[type="checkbox"]');
-            if (checkbox) {
-                checkbox.checked = false;
-                item.classList.remove('completed');
-            }
-        });
-        updateResetButtonVisibility();
-    }
-
-    function updateResetButtonVisibility() {
-        const resetBtn = document.getElementById('reset-checkboxes');
-        if (!resetBtn) return;
-
-        const checkboxes = document.querySelectorAll('.feeding-item input[type="checkbox"]');
-        const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
-
-        if (anyChecked) {
-            resetBtn.classList.add('visible');
-        } else {
-            resetBtn.classList.remove('visible');
-        }
-    }
-
-    function initResetButton() {
-        const resetBtn = document.getElementById('reset-checkboxes');
-        if (!resetBtn) return;
-
-        resetBtn.addEventListener('click', function() {
-            clearExpiredCheckboxes();
-            resetAllCheckboxesUI();
-        });
-    }
-
     // Progressive enhancement for images
     function initLazyImages() {
         if ('loading' in HTMLImageElement.prototype) {
@@ -420,6 +276,162 @@
         });
     }
 
+    // Get today's date as ISO string (YYYY-MM-DD) in local timezone
+    function getTodayDateString() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return year + '-' + month + '-' + day;
+    }
+
+    // Load checkbox states from localStorage
+    function loadCheckboxStates() {
+        try {
+            const stored = localStorage.getItem('feedingChecks');
+            if (!stored) return {};
+
+            const data = JSON.parse(stored);
+            const today = getTodayDateString();
+
+            // If stored date doesn't match today, clear checkboxes
+            if (data.date !== today) {
+                localStorage.removeItem('feedingChecks');
+                return {};
+            }
+
+            return data.items || {};
+        } catch (e) {
+            return {};
+        }
+    }
+
+    // Save checkbox state to localStorage
+    function saveCheckboxState(itemId, checked) {
+        try {
+            const stored = localStorage.getItem('feedingChecks');
+            const today = getTodayDateString();
+            let data;
+
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // If stored date doesn't match today, start fresh (don't preserve old items)
+                data = (parsed.date === today) ? parsed : { date: today, items: {} };
+            } else {
+                data = { date: today, items: {} };
+            }
+
+            data.items[itemId] = checked;
+            localStorage.setItem('feedingChecks', JSON.stringify(data));
+        } catch (e) {
+            // localStorage unavailable, checkboxes still work but don't persist
+        }
+    }
+
+    // Check if date has changed and clear checkboxes if needed
+    function checkDateChange() {
+        try {
+            const stored = localStorage.getItem('feedingChecks');
+            if (!stored) return;
+
+            const data = JSON.parse(stored);
+            const today = getTodayDateString();
+
+            if (data.date !== today) {
+                localStorage.removeItem('feedingChecks');
+                resetAllCheckboxesUI();
+            }
+        } catch (e) {
+            // Ignore errors
+        }
+    }
+
+    // Reset all checkboxes UI without affecting other state
+    function resetAllCheckboxesUI() {
+        const checkboxes = document.querySelectorAll('.item-checkbox input[type="checkbox"]');
+        checkboxes.forEach(function(checkbox) {
+            checkbox.checked = false;
+            var feedingItem = checkbox.closest('.feeding-item');
+            if (feedingItem) {
+                feedingItem.classList.remove('completed');
+            }
+        });
+    }
+
+    // Update reset button visibility based on checkbox state
+    function updateResetButtonVisibility() {
+        var resetBtn = document.getElementById('reset-checkboxes');
+        if (!resetBtn) return;
+
+        var checkboxes = document.querySelectorAll('.item-checkbox input[type="checkbox"]');
+        var anyChecked = Array.prototype.some.call(checkboxes, function(cb) {
+            return cb.checked;
+        });
+
+        if (anyChecked) {
+            resetBtn.classList.add('visible');
+        } else {
+            resetBtn.classList.remove('visible');
+        }
+    }
+
+    // Initialize reset button
+    function initResetButton() {
+        var resetBtn = document.getElementById('reset-checkboxes');
+        if (!resetBtn) return;
+
+        resetBtn.addEventListener('click', function() {
+            localStorage.removeItem('feedingChecks');
+            resetAllCheckboxesUI();
+            updateResetButtonVisibility();
+        });
+    }
+
+    // Initialize checkboxes with localStorage persistence
+    function initCheckboxes() {
+        const checkboxes = document.querySelectorAll('.item-checkbox input[type="checkbox"]');
+        if (checkboxes.length === 0) return;
+
+        // Load saved states
+        const savedStates = loadCheckboxStates();
+
+        checkboxes.forEach(function(checkbox) {
+            const itemId = checkbox.getAttribute('data-item-id');
+            if (!itemId) return;
+
+            // Restore saved state
+            if (savedStates[itemId]) {
+                checkbox.checked = true;
+                var feedingItem = checkbox.closest('.feeding-item');
+                if (feedingItem) {
+                    feedingItem.classList.add('completed');
+                }
+            }
+
+            // Add change listener
+            checkbox.addEventListener('change', function() {
+                var feedingItem = this.closest('.feeding-item');
+                if (feedingItem) {
+                    if (this.checked) {
+                        feedingItem.classList.add('completed');
+                    } else {
+                        feedingItem.classList.remove('completed');
+                    }
+                }
+                saveCheckboxState(itemId, this.checked);
+                updateResetButtonVisibility();
+
+                // Haptic feedback on mobile
+                if ('vibrate' in navigator) {
+                    navigator.vibrate(30);
+                }
+            });
+        });
+
+        // Update reset button visibility based on restored state
+        updateResetButtonVisibility();
+    }
+
     // Initialize all features when DOM is ready
     function init() {
         initTabs();
@@ -427,9 +439,9 @@
         initFAB();
         initKeyboardNav();
         initLazyImages();
+        highlightCurrentMealTime();
         initCheckboxes();
         initResetButton();
-        highlightCurrentMealTime();
         registerServiceWorker();
         initInstallPrompt();
 
