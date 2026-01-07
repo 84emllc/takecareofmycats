@@ -183,5 +183,23 @@
     </div>
 
     <script src="assets/js/main.js"></script>
+
+    <!-- Simple Analytics -->
+    <script>
+        if (window.location.search.includes('notrack')) {
+            sessionStorage.setItem('sa_notrack', 'true');
+        }
+        if (sessionStorage.getItem('sa_notrack') !== 'true') {
+            var s1 = document.createElement('script');
+            s1.async = true;
+            s1.src = 'https://scripts.simpleanalyticscdn.com/latest.js';
+            document.head.appendChild(s1);
+            var s2 = document.createElement('script');
+            s2.async = true;
+            s2.src = 'https://scripts.simpleanalyticscdn.com/auto-events.js';
+            document.head.appendChild(s2);
+        }
+    </script>
+    <noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif" alt="" referrerpolicy="no-referrer-when-downgrade"></noscript>
 </body>
 </html>
